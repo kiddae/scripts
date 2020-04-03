@@ -12,6 +12,6 @@ done
 
 while [ true ];
 	do
-	notify-send -u critical -t 3000 "time manager" "$(uptime -p)"
-	sleep 30m;
+	sleep 30m
+	notify-send "time manager" "$(uptime -p)"
 	done

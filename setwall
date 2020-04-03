@@ -11,5 +11,8 @@ wpg -s $1
 # remove wal-sample files
 find $WALLPPAPER_FOLDER -type f -name *wal_sample.png -delete
 
-# link it to a file
-ln -s $1 .config/wall --force
+# link
+ln $1 ~/.config/wall --force
+
+# notify
+notify-send -i $1 "Wallpaper changed."
