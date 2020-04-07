@@ -2,7 +2,7 @@
  
 wpg -R $1
 wpg -z $1
-wpg --brt $1 25
+#wpg --brt $1 25
 wpg -s $1
 
 # update pywalfox
@@ -15,4 +15,4 @@ find $WALLPPAPER_FOLDER -type f -name *wal_sample.png -delete
 ln $1 ~/.config/wall --force
 
 # notify
-notify-send -i $1 "Wallpaper changed."
+notify-send -i $1 "Wallpaper changed" "to $1"

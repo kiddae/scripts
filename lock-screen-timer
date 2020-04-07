@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# NAME: lock-screen-timer
+# PATH: $HOME/bin
+# DESC: Lock screen in x minutes
+# CALL: Place on Desktop or call from Terminal with "lock-screen-timer 99"
+# DATE: Created Nov 19, 2016. Last revision Mar 22, 2018.
+# UPDT: Updated to support WSL (Windows Subsystem for Linux)
+#       Remove hotplugtv. Replace ogg with paplay.
+
+# NOTE: Time defaults to 30 minutes.
+#       If previous version is sleeping it is killed.
+#       Zenity is used to pop up entry box to get number of minutes.
+#       If zenity is closed with X or Cancel, no screen lock timer is launched.
+#       Pending lock warning displayed on-screen at set intervals.
+#       Write time remaining to ~/.lock-screen-timer-remaining
+
+MINUTES="$1" # Optional parameter 1 when invoked from terminal.
+
+# if no parameters set default MINUTES to 30
+if [ $# == 0 ]; then
+    MINUTES=30
+fi
+
+DEFAULT="$MINUTES" # When looping, minutes count down to zero. Save deafult for subsequent timers.
+
+# Check if lock screen timer already running
+pID=$(pgrep -f "${0##*/}") # All PIDs matching lock-screen-timer name
+PREVIOUS=$(echo "$pID" | grep -v ^"$$") # Strip out this running copy ($$$)
+if [ "$PREVIOUS" != "" ]; then
+    kill "$PREVIOUS"
+    rm ~/.lock-screen-timer-remaining
+    zenity --info --title="Lock screen timer already running" --text="Previous lock screen timer has been terminated."
+fi
+
+while true ; do # loop until cancel
+
+    # Get number of minutes until lock from user
+    MINUTES=$(zenity --entry --title="Lock screen timer" --text="Set number of minutes until lock" --entry-text="$DEFAULT")
+
+    RESULT=$? # Zenity return code
+    if [ $RESULT != 0 ]; then
+        break ; # break out of timer lock screen loop and end this script.
+    fi
+
+    DEFAULT="$MINUTES" # Save deafult for subsequent timers.
+    if [[ $MINUTES == 0 ]] || [[ $MINUTES == "" ]]; then
+        break ; # zero minutes considered cancel.
+    fi
+
+    # Loop for X minutes, testing each minute for alert message.
+    (( ++MINUTES )) 
+    while (( --MINUTES > 0 )); do
+        case $MINUTES in 1|2|3|5|10|15|30|45|60|120|480|960|1920)
+            notify-send --icon=/usr/share/icons/gnome/256x256/status/appointment-soon.png "Locking screen in ""$MINUTES"" minute(s)." ;
+        esac;
+
+        # Record number of minutes remaining to file other processes can read.
+        echo "$MINUTES Minutes" > ~/.lock-screen-timer-remaining
+
+        sleep 60
+
+    done
+
+    rm ~/.lock-screen-timer-remaining # Remove work file others can see our progress with
+
+    i3-msg exit || openbox --exit # logout
+
+done # End of while loop getting minutes to next lock screen
+
+exit 0 # Closed dialog box or "Cancel" selected.#!/bin/bash
