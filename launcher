@@ -1,0 +1,2 @@
+#!/bin/bash
+rofi -show run -location 1 -width 900 -lines 45

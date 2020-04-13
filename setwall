@@ -6,13 +6,12 @@ wpg -z $1
 wpg -s $1
 
 # update pywalfox
-/home/nguyenleluc/Applications/Pywalfox/daemon/pywalfox.py update
+~/.apps/Pywalfox/daemon/pywalfox.py update
 
 # remove wal-sample files
 find $WALLPPAPER_FOLDER -type f -name *wal_sample.png -delete
 
-# link
-ln $1 ~/.config/wall --force
+cp $1 ~/.config/wall
 
 # notify
 notify-send -i $1 "Wallpaper changed" "to $1"
