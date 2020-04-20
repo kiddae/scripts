@@ -1,6 +1,6 @@
 #!/bin/bash
 choices="Logout\nShutdown\nReboot"
-chosen=$(echo -e $choices | rofi -dmenu -i -p "Power Menu" -location 3 -width -30 -lines 45)
+chosen=$(echo -e $choices | rofi -dmenu -i -p "Power Menu" -location 4 -width -20)
 echo "$chosen"
 
 case "$chosen" in
