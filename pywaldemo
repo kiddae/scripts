@@ -1,0 +1,6 @@
+#!/bin/bash
+while : 
+do
+    randomwall
+    sleep 1
+done

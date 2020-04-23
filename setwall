@@ -1,15 +1,18 @@
 #!/bin/bash
  
+#wpg -z $1
 wpg -R $1
-wpg -z $1
+wpg -A $1
 #wpg --brt $1 25
 wpg -s $1
+
+feh --bg-fill $1
 
 # update pywalfox
 ~/.apps/Pywalfox/daemon/pywalfox.py update
 
 # remove wal-sample files
-find $WALLPPAPER_FOLDER -type f -name *wal_sample.png -delete
+find $WALLPAPER_FOLDER -type f -name *wal_sample.png -delete
 
 cp $1 ~/.config/wall
 
