@@ -64,7 +64,7 @@ while true ; do # loop until cancel
 
     rm ~/.lock-screen-timer-remaining # Remove work file others can see our progress with
 
-    i3-msg exit || openbox --exit # logout
+    i3-msg exit || openbox --exit || bspc quit # logout
 
 done # End of while loop getting minutes to next lock screen
 

@@ -12,6 +12,6 @@ done
 
 while [ true ];
 	do
-	sleep 30m
+	sleep 20m
 	notify-send "time manager" "$(uptime -p)"
 	done

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# set random wallpaper
-setwall $(echo -e "$(find $WALLPAPER_FOLDER -name *.jpg)\n$(find $WALLPAPER_FOLDER -name *.png)" | shuf | head -n1)
-

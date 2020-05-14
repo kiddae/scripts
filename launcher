@@ -1,2 +1,3 @@
 #!/bin/bash
-rofi -show run
+theme=~/.colors/gruvbox/gruvbox-rofi.rasi
+rofi -show run -theme $theme

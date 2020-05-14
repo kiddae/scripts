@@ -1,10 +1,10 @@
 #!/bin/bash
 choices="Logout\nShutdown\nReboot"
-chosen=$(echo -e $choices | rofi -dmenu -i -p "Power Menu" -location 4 -width -20)
+chosen=$(echo -e $choices | rofi -dmenu -i -p "Power Menu" -theme ~/.colors/gruvbox/gruvbox-rofi.rasi)
 echo "$chosen"
 
 case "$chosen" in
-		Logout) i3-msg exit || openbox --exit ;;
+		Logout) i3-msg exit || openbox --exit || bspc quit ;;
 		Shutdown) poweroff ;;
 		Reboot) reboot ;; 
 esac

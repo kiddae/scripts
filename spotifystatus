@@ -1,9 +1,0 @@
-#!/bin/bash
-if [[ $(playerctl metadata --format {{status}}) == "Playing" ]]
-then
-    echo ""
-fi
-if [[ $(playerctl metadata --format {{status}}) == "Paused" ]]
-then
-    echo ""
-fi
