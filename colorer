@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+import os
+import sys
+import glob
+import re
+
+HOME = "/home/me/"
+CACHE_DIR = HOME + ".cache/colorer/"
+COLORSCHEME = HOME + ".config/colorer/colorschemes/" + sys.argv[1]
+TEMPLATES = glob.glob(HOME + ".config/colorer/templates/*")
+
+colors = dict()
+
+# Get the keys and values from the file to a dict
+with open(COLORSCHEME, "r") as file_flux:
+    for line in file_flux:
+        key = line.split(" ")[0]
+        color = line.split(" ")[1]
+        color = color.replace("\n", "")
+        colors[key] = color
+
+# write files from templates
+for file in TEMPLATES:
+    input_flux = open(file, "r");
+    output_flux = open(CACHE_DIR + file.split("/")[-1], "w");
+
+    for line in input_flux:
+        for color in colors.items():
+            if re.search("{" + color[0] + "}", line) != None:
+                line = re.sub("{" + color[0] + "}", color[1], line)
+                #line = line.replace("\n", "")
+
+        output_flux.write(line)
+
+    input_flux.close()
+    output_flux.close()
+        
