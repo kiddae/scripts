@@ -1,0 +1,31 @@
+#!/bin/bash
+pkgs=$(yay -Qq | wc -l &)
+distro=$(cat /etc/os-release | head -n1 | cut -d\" -f2 &)
+kernel=$(uname -r &)
+
+ramtotal=$(free -h | grep Mem | awk '{ print $2 }' &)
+ramused=$(free -h | grep Mem | awk '{ print $3 }' &)
+
+uptime=$(uptime -p | cut -d" " -f2- &)
+model=$(cat /sys/devices/virtual/dmi/id/product_name &)
+
+duhometotal=$(df -h /home | tail -n1 | awk '{ print $2 }')
+duhomeused=$(df -h /home | tail -n1 | awk '{ print $3 }')
+duhomepercent=$(df -h /home | tail -n1 | awk '{ print $5 }')
+duroottotal=$(df -h / | tail -n1 | awk '{ print $2 }')
+durootused=$(df -h / | tail -n1 | awk '{ print $3 }')
+durootpercent=$(df -h / | tail -n1 | awk '{ print $5 }')
+
+foreground=7
+
+echo -e ""
+echo -e "  \033[4$foreground;30m          \033[0m"
+echo -e "  \033[4$foreground;30m  distro  \033[0m  \033[3${foreground}m$distro\033[0m"
+echo -e "  \033[4$foreground;30m  kernel  \033[0m  \033[3${foreground}m$kernel\033[0m"
+echo -e "  \033[4$foreground;30m  uptime  \033[0m  \033[3${foreground}m$uptime\033[0m"
+echo -e "  \033[4$foreground;30m  packgs  \033[0m  \033[3${foreground}m$pkgs\033[0m"
+echo -e "  \033[4$foreground;30m  home    \033[0m  \033[3${foreground}m$duhomeused / $duhometotal ($duhomepercent)\033[0m"
+echo -e "  \033[4$foreground;30m  root    \033[0m  \033[3${foreground}m$durootused / $duroottotal ($durootpercent)\033[0m"
+echo -e "  \033[4$foreground;30m  memory  \033[0m  \033[3${foreground}m$ramused / $ramtotal\033[0m"
+echo -e "  \033[4$foreground;30m          \033[0m"
+echo -e ""

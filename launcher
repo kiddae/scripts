@@ -1,3 +1,4 @@
 #!/bin/bash
-theme=~/.colors/gruvbox/gruvbox-rofi.rasi
+theme=~/.cache/colorer/rofi.rasi
+# theme=~/.config/rofi/san.rasi
 rofi -show run -theme $theme

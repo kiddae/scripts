@@ -4,9 +4,16 @@ import sys
 import glob
 import re
 
+
 HOME = "/home/me/"
 CACHE_DIR = HOME + ".cache/colorer/"
-COLORSCHEME = HOME + ".config/colorer/colorschemes/" + sys.argv[1]
+
+if sys.argv[1] == "-R":
+    with open(CACHE_DIR + "colorscheme", "r") as file_flux:
+        COLORSCHEME = file_flux.read()
+else:
+    COLORSCHEME = HOME + ".config/colorer/colorschemes/" + sys.argv[1]
+
 TEMPLATES = glob.glob(HOME + ".config/colorer/templates/*")
 
 colors = dict()
@@ -34,4 +41,24 @@ for file in TEMPLATES:
 
     input_flux.close()
     output_flux.close()
-        
+
+with open(CACHE_DIR + "colorscheme", "w") as file_flux:
+    file_flux.write(COLORSCHEME)
+
+# Reload everything
+
+os.system("xrdb ~/.Xresources")
+os.system("pkill -USR1 polybar")
+os.system("killall dunst && dunst &")
+
+# Reload terminals with escape sequences
+tty_pattern = "/dev/pts/[0-9]*"
+with open(CACHE_DIR + "sequences", "r") as file:
+    sequences = file.read()
+
+for term in glob.glob(tty_pattern):
+    with open(term, "w") as file:
+        file.write(sequences)
+
+os.system("feh --bg-fill " + colors['wp'])
+
