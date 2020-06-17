@@ -1,10 +1,10 @@
 #!/bin/bash
-choices="Logout\nShutdown\nReboot"
+choices="Logout\nPoweroff\nReboot"
 chosen=$(echo -e $choices | rofi -dmenu -i -p "Power Menu" -theme ~/.cache/colorer/rofi.rasi)
 echo "$chosen"
 
 case "$chosen" in
 		Logout) bspc quit ;;
-		Shutdown) poweroff ;;
+		Poweroff) poweroff ;;
 		Reboot) reboot ;; 
 esac
