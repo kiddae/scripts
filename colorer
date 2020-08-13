@@ -28,8 +28,8 @@ with open(COLORSCHEME, "r") as file_flux:
 
 # write files from templates
 for file in TEMPLATES:
-    input_flux = open(file, "r");
-    output_flux = open(CACHE_DIR + file.split("/")[-1], "w");
+    input_flux = open(file, "r")
+    output_flux = open(CACHE_DIR + file.split("/")[-1], "w")
 
     for line in input_flux:
         for color in colors.items():
@@ -50,6 +50,7 @@ with open(CACHE_DIR + "colorscheme", "w") as file_flux:
 os.system("xrdb ~/.Xresources")
 os.system("pkill -USR1 polybar")
 os.system("killall dunst && dunst &")
+# os.system("bspc wm -r")
 
 # Reload terminals with escape sequences
 tty_pattern = "/dev/pts/[0-9]*"
@@ -61,4 +62,3 @@ for term in glob.glob(tty_pattern):
         file.write(sequences)
 
 os.system("feh --bg-fill " + colors['wp'])
-
