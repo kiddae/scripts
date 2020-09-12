@@ -18,8 +18,8 @@ esac
 border_width_current=$(bspc config border_width)
 
 # half if even, 1px to outer if odd
-border_width_in_normal=$(( border_width_current/2 ))
-border_width_out_normal=$(( border_width_current*4 ))
+border_width_in_normal=$(( border_width_current ))
+border_width_out_normal=$(( border_width_current*8 ))
 border_width_in_focused=$border_width_in_normal
 border_width_out_focused=$border_width_out_normal
 

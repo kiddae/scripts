@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+#   double borders (on) any wm
+#
+
+outer='0x282828'   # outer
+inner1='0xebdbb2'  # focused
+inner2='0x928374'  # normal
+
+bspc config border_width 18
+chwb -s 10
+
+draw() { chwb2 -I "$i" -O "$o" -i "2" -o "16" $@ 2> /dev/null; }
+
+# initial draw, and then subscribe to events
+{ echo; wew; } |
+        while read -r _; do
+                i=$inner2 o=$outer draw "$(lsw)"
+                i=$inner1 o=$outer draw "$(pfw)"
+        done 
