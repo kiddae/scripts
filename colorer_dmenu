@@ -1,0 +1,4 @@
+#!/bin/bash
+fg=$(xrdb -query | grep foreground | cut -d':' -f2 | sed 's/	//g')
+bg=$(xrdb -query | grep background | cut -d':' -f2 | sed 's/	//g')
+colorer $(ls -1 ~/.config/colorer/colorschemes/ | prompt "Choose a colorscheme...")

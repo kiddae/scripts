@@ -6,7 +6,10 @@ default_dir=~/Pictures/Screenshots
 sleep 0.6
 maim -u $1 $file 
 
-dir=$(find ~ -type d 2>/dev/null | rofi -dmenu -i -p "Choose a directory" -theme ~/.cache/colorer/rofi.rasi)
+# dir=$(find ~ -type d 2>/dev/null | rofi -dmenu -i -p "Choose a directory" -theme ~/.cache/colorer/rofi.rasi)
+fg=$(xrdb -query | grep foreground | cut -d':' -f2 | sed 's/	//g')
+bg=$(xrdb -query | grep background | cut -d':' -f2 | sed 's/	//g')
+dir=$(find ~ -type d 2>/dev/null | prompt "Choose a directory...")
 
 if [[ -n $dir ]]; then
     mv $file $dir

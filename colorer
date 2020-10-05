@@ -35,7 +35,7 @@ for file in TEMPLATES:
         for color in colors.items():
             if re.search("{" + color[0] + "}", line) != None:
                 line = re.sub("{" + color[0] + "}", color[1], line)
-                #line = line.replace("\n", "")
+                # line = line.replace("\n", "")
 
         output_flux.write(line)
 
@@ -47,12 +47,40 @@ with open(CACHE_DIR + "colorscheme", "w") as file_flux:
 
 # Reload everything
 
+print("Reload XResources")
 os.system("xrdb ~/.Xresources")
+print("Reload polybar")
 os.system("pkill -USR1 polybar")
+print("Reload dunst")
 os.system("killall dunst && dunst &")
+print("Set the wallpaper")
+os.system("feh --bg-fill " + colors['wp'])
+print("Reload bspwm")
 os.system("bspc wm -r")
 
+# modify neovim colorscheme
+print("Update the neovim colorscheme")
+match = ""
+with open('/home/me/.config/nvim/global.vim', 'r') as file:
+    for line in file:
+        match += re.sub('^colorscheme ([a-z]*-?_?[a-z]*)$',
+                        'colorscheme {}'.format(os.path.basename(COLORSCHEME)), line)
+
+with open('/home/me/.config/nvim/global.vim', 'w') as file:
+    file.write(match)
+
+print("Update lightline.vim colorscheme")
+match = ""
+with open('/home/me/.config/nvim/plug-config/lightline.vim', 'r') as file:
+    for line in file:
+        match += re.sub(r"'colorscheme': '[a-z]*-?_?[a-z]*',$",
+                        r"'colorscheme': '{}',".format(os.path.basename(COLORSCHEME)), line)
+
+with open('/home/me/.config/nvim/plug-config/lightline.vim', 'w') as file:
+    file.write(match)
+
 # Reload terminals with escape sequences
+print("Change terminal colors")
 tty_pattern = "/dev/pts/[0-9]*"
 with open(CACHE_DIR + "sequences", "r") as file:
     sequences = file.read()
@@ -61,4 +89,6 @@ for term in glob.glob(tty_pattern):
     with open(term, "w") as file:
         file.write(sequences)
 
-os.system("feh --bg-fill " + colors['wp'])
+print("Changing the sddm wall")
+os.system(
+    "cp {} /usr/share/sddm/themes/sugar-candy/Backgrounds/Wall.png".format(colors['wp']))
