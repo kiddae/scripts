@@ -1,3 +1,0 @@
-#!/bin/bash
-~/.ncmpcpp/art.sh
-tmux new-session "tmux source-file ~/.ncmpcpp/tmux_session"

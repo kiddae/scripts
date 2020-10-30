@@ -1,0 +1,7 @@
+#!/bin/bash
+artist=$(playerctl metadata --format {{artist}} -p playerctld 2>/dev/null)
+title=$(playerctl metadata --format {{title}} -p playerctld 2>/dev/null | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
+[[ $(playerctl status -p playerctld) = "Playing" ]] && status= || status=
+string=$(echo %{T2}$artist:%{T-} $title %{A1:playerctl previous -p playerctld:}%{A} %{A1:playerctl play-pause -p playerctld:}$status%{A} %{A1:playerctl next -p playerctld:}%{A})
+
+echo $string
