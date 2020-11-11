@@ -1,8 +1,8 @@
 state=$1
 bspc rule -a '*' state=$1 && bspc query -N | xargs -n1 -I '{}' bspc node {} -t $1
-if [[ $state = 'floating' ]]
-then
-    xdo show -N Polybar ; pkill -f polybar-autohide
-else
-    polybar-autohide &>/dev/null
-fi
+# if [[ $state = 'floating' ]]
+# then
+#     xdo show -N Polybar ; pkill -f polybar-autohide
+# else
+#     polybar-autohide &>/dev/null
+# fi
