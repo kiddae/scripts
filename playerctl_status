@@ -1,6 +1,4 @@
 #!/bin/bash
-color_playing=$(polybar --dump=foreground base)
-color_paused=$(polybar --dump=line-color base)
 [[ $(playerctl status -p $1) = "Playing" ]] && color=$(polybar --dump=foreground base) || color=$(polybar --dump=line-color base)
 player=$1
 artist=$(playerctl metadata --format {{artist}} -p $1 2>/dev/null)
