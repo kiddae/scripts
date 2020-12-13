@@ -3,4 +3,4 @@
 fg=$(xrdb -query | grep foreground | cut -d':' -f2 | sed 's/	//g')
 bg=$(xrdb -query | grep background | cut -d':' -f2 | sed 's/	//g')
 # dmenu -fn 'SF Pro Display' -x 20 -y 20 -w 1880 -h 30 -nb $bg -nf $fg -sb $fg -sf $bg -dim 0.5 -p "$1" -i
-rofi -dmenu -p "$1" -theme ~/.cache/colorer/rofi.rasi
+rofi -dmenu -p "$1" -theme ~/.cache/colorer/rofi.rasi -i

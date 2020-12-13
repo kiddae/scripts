@@ -79,6 +79,19 @@ with open('/home/me/.config/nvim/plug-config/lightline.vim', 'r') as file:
 with open('/home/me/.config/nvim/plug-config/lightline.vim', 'w') as file:
     file.write(match)
 
+# sddm
+print("Changing the sddm wall")
+os.system(
+    "cp {} /usr/share/sddm/themes/sugar-candy/Backgrounds/Wall.png".format(colors['wp']))
+
+print("Changing the lightdm wall")
+os.system(
+    # "cp {} /usr/share/backgrounds/Wall.png".format(colors['wp']))
+    "cp {} /usr/share/lightdm-webkit/themes/lightdm-webkit-theme-aether/src/img/wallpapers/Wall.png".format(colors['wp']))
+# betterlockscreen
+# print("Update lock screen")
+# os.system("betterlockscreen -u {}".format(colors['wp']))
+
 # Reload terminals with escape sequences
 print("Change terminal colors")
 tty_pattern = "/dev/pts/[0-9]*"
@@ -88,7 +101,3 @@ with open(CACHE_DIR + "sequences", "r") as file:
 for term in glob.glob(tty_pattern):
     with open(term, "w") as file:
         file.write(sequences)
-
-print("Changing the sddm wall")
-os.system(
-    "cp {} /usr/share/sddm/themes/sugar-candy/Backgrounds/Wall.png".format(colors['wp']))

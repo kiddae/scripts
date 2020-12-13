@@ -3,12 +3,21 @@ import time
 import subprocess
 import re
 import logging
+import signal
+import sys
 
 DELAY = 10
 SCREEN_HEIGHT = 1080
 PERCENT_LIMIT = 15
-SHOW_CMD = 'xdo show -N Polybar && bspc config top_padding 60'
-HIDE_CMD = 'xdo hide -N Polybar && bspc config top_padding 0'
+BAR_HEIGHT = int(subprocess.check_output(
+    'polybar --dump=height base 2>/dev/null', shell=True)) + int(subprocess.check_output('polybar --dump=offset-y base 2>/dev/null', shell=True)) * 2
+if subprocess.check_output('polybar --dump=bottom base 2>/dev/null', shell=True) == b'true\n':
+    BAR_POS = 'bottom'
+else:
+    BAR_POS = 'top'
+SHOW_CMD = 'xdo show -N Polybar && bspc config {}_padding {}'.format(
+    BAR_POS, BAR_HEIGHT)
+HIDE_CMD = 'xdo hide -N Polybar && bspc config bottom_padding 0 && bspc config top_padding 0'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -20,14 +29,29 @@ def get_y_position():
     return int(re.search(r'Y=(\d{1,})', xdotool_output).groups()[0]) + 1
 
 
-hidden = True
+def cleanup(*args):
+    subprocess.call(SHOW_CMD, shell=True)
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, cleanup)
+signal.signal(signal.SIGTERM, cleanup)
+
+
 subprocess.call(HIDE_CMD, shell=True)
+hidden = True
 while True:
     y = get_y_position()
     if hidden:
-        on_edge = y < 10
+        if BAR_POS == 'bottom':
+            on_edge = y > (1080 - 10)
+        else:
+            on_edge = y < 10
     else:
-        on_edge = y < 80
+        if BAR_POS == 'bottom':
+            on_edge = y > (1080 - BAR_HEIGHT)
+        else:
+            on_edge = y < BAR_HEIGHT
     logging.info("Got height %d. On edge: %s", y, str(on_edge))
     if on_edge and hidden:
         subprocess.call(SHOW_CMD, shell=True)

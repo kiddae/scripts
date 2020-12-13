@@ -1,9 +1,14 @@
 #!/bin/bash
-[[ $(playerctl status -p $1) = "Playing" ]] && color=$(polybar --dump=foreground base) || color=$(polybar --dump=line-color base)
+play_icon=$2
+pause_icon=$3
+prev_icon=$4
+next_icon=$5
+logo_icon=$6
+[[ $(playerctl status -p $1) = "Playing" ]] && color=$(polybar --dump=foreground base 2>/dev/null) || color=$(polybar --dump=line-color base 2>/dev/null)
 player=$1
 artist=$(playerctl metadata --format {{artist}} -p $1 2>/dev/null)
 title=$(playerctl metadata --format {{title}} -p $1 2>/dev/null | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
-[[ $(playerctl status -p $1) = "Playing" ]] && status= || status=
-string=$(echo %{F$color}  %{T2}$artist:%{T-} $title %{F-}%{A1:playerctl previous -p $1:}%{A} %{A1:playerctl play-pause -p $1:}$status%{A} %{A1:playerctl next -p $1:}%{A}%{-o})
+[[ $(playerctl status -p $1) = "Playing" ]] && status=$pause_icon || status=$play_icon
+string=$(echo %{F$color}$logo_icon %{T2}$artist:%{T-} $title%{F-}%{A1:playerctl previous -p $1:} $prev_icon%{A}%{A1:playerctl play-pause -p $1:} $status%{A}%{A1:playerctl next -p $1:} $next_icon%{A}%{-o})
 
 echo $string
