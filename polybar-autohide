@@ -16,8 +16,8 @@ if subprocess.check_output('polybar --dump=bottom base 2>/dev/null', shell=True)
 else:
     BAR_POS = 'top'
 SHOW_CMD = 'xdo show -N Polybar && bspc config {}_padding {}'.format(
-    BAR_POS, BAR_HEIGHT)
-HIDE_CMD = 'xdo hide -N Polybar && bspc config bottom_padding 0 && bspc config top_padding 0'
+    BAR_POS, BAR_HEIGHT + int(subprocess.check_output('bspc config left_padding', shell=True)))
+HIDE_CMD = 'xdo hide -N Polybar && bspc config bottom_padding $(bspc config left_padding) && bspc config top_padding $(bspc config right_padding)'
 
 logging.basicConfig(level=logging.INFO)
 

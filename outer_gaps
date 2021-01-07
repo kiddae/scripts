@@ -1,0 +1,15 @@
+#!/bin/bash
+left=$(bspc config -d focused left_padding)
+right=$(bspc config -d focused right_padding)
+top=$(bspc config -d focused top_padding)
+bottom=$(bspc config -d focused bottom_padding)
+
+[[ $(($left$1)) -ge 0 ]] && n_left=$(($left$1))
+[[ $(($right$1)) -ge 0 ]] && n_right=$(($right$1))
+[[ $(($top$1)) -ge 0 ]] && n_top=$(($top$1))
+[[ $(($bottom$1)) -ge 0 ]] && n_bottom=$(($bottom$1))
+
+bspc config -d focused left_padding $n_left
+bspc config -d focused right_padding $n_right
+bspc config -d focused top_padding $n_top
+bspc config -d focused bottom_padding $n_bottom

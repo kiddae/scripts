@@ -1,5 +1,5 @@
 #!/bin/bash
-choices="Lock\nSuspend\nLogout\nPoweroff\nReboot"
+choices="Poweroff\nLogout\nReboot\nLock\nSuspend"
 # chosen=$(echo -e $choices | rofi -dmenu -i -p "Power Menu" -theme ~/.cache/colorer/rofi.rasi)
 fg=$(xrdb -query | grep foreground | cut -d':' -f2 | sed 's/	//g')
 bg=$(xrdb -query | grep background | cut -d':' -f2 | sed 's/	//g')

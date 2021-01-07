@@ -1,7 +1,5 @@
 #!/bin/bash
-theme=~/.cache/colorer/rofi.rasi
-# # theme=~/.config/rofi/san.rasi
-rofi -show run -theme $theme
-fg=$(xrdb -query | grep foreground | cut -d':' -f2 | sed 's/	//g')
-bg=$(xrdb -query | grep background | cut -d':' -f2 | sed 's/	//g')
-# dmenu_run -fn 'SF Pro Display' -x 20 -y 20 -w 1880 -h 30 -nb $bg -nf $fg -sb $fg -sf $bg -dim 0.5 -p "Launch..."
+# theme=~/.cache/colorer/rofi.rasi
+# theme=~/.config/rofi/san.rasi
+# rofi -show run -theme $theme
+prompt 'Launcher' --run
