@@ -42,9 +42,11 @@ shell=$(basename $SHELL)
 
 tput clear
 cat << EOF
+
              $d$f1$h  $t$wmname
    (\ /)     $f3$k  $t$kernel
    ( $d. .$t)    $f2$sh  $t$shell
    c($f1"$t)($f1"$t)   $f5$r  $t$resolution
              $f4$w  $t$wifiname
+
 EOF
