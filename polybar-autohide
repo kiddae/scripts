@@ -7,7 +7,8 @@ import signal
 import sys
 
 DELAY = 10
-SCREEN_HEIGHT = 1080
+SCREEN_HEIGHT = subprocess.check_output(
+    "xdpyinfo | awk '/dimensions/{print $2}' | cut -d'x' -f2", shell=True)
 PERCENT_LIMIT = 15
 BAR_HEIGHT = int(subprocess.check_output(
     'polybar --dump=height base 2>/dev/null', shell=True)) + int(subprocess.check_output('polybar --dump=offset-y base 2>/dev/null', shell=True)) * 2

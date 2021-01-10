@@ -4,7 +4,7 @@
 # $1 is the text shown in the prompt (defaults as 'dmenu')
 # if $2 is '--run', runs dmenu_run instead
 
-fg=$(getxres color8)
+fg=$(getxres foreground)
 bg=$(getxres background)
 [[ $1 == '' ]] && prompt='dmenu' || prompt=$1
 args="-fn scientifica-8 -b -h 25 -nb ${bg} -nf ${fg} -sb ${fg} -sf ${bg} -p ${prompt} -i"
