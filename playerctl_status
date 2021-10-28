@@ -1,14 +1,65 @@
-#!/bin/bash
-play_icon=$2
-pause_icon=$3
-prev_icon=$4
-next_icon=$5
-logo_icon=$6
-[[ $(playerctl status -p $1 2>/dev/null) = "Playing" ]] && color=$(polybar --dump=foreground base 2>/dev/null) || color=$(polybar --dump=line-color base 2>/dev/null)
-player=$1
-artist=$(playerctl metadata --format {{artist}} -p $1 2>/dev/null)
-title=$(playerctl metadata --format {{title}} -p $1 2>/dev/null | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
-[[ $(playerctl status -p $1 2>/dev/null) = "Playing" ]] && status=$pause_icon || status=$play_icon
-string=$(echo %{F$color}$logo_icon %{T2}$artist:%{T-} $title%{F-}%{A1:playerctl previous -p $1:} $prev_icon%{A}%{A1:playerctl play-pause -p $1:} $status%{A}%{A1:playerctl next -p $1:} $next_icon%{A}%{-o})
+#!/usr/bin/env python3
+import sys
+import subprocess
 
-echo $string
+
+def get(str):
+    try:
+        return subprocess.check_output(str, shell=True).decode('utf-8').replace('\n', '')
+    except:
+        return ""
+
+
+def getpol(key, bar):
+    str = "polybar --dump={} {} 2>/dev/null".format(key, bar)
+    return get(str)
+
+
+def getctl(format):
+    global player
+    str = "playerctl metadata --format {{{{{}}}}} -p {} 2>/dev/null".format(
+        format, player)
+    return get(str)
+
+
+player = sys.argv[1]
+play_icon = sys.argv[2]
+pause_icon = sys.argv[3]
+prev_icon = sys.argv[4]
+next_icon = sys.argv[5]
+logo_icon = sys.argv[6]
+strlen = int(sys.argv[7])
+
+if getctl('status') == "Playing":
+    color = getpol('foreground', 'base')
+else:
+    color = getpol('line-color', 'base')
+
+artist = getctl('artist')
+title = getctl('title')
+total_length = len(artist) + len(title) + 2
+
+if total_length > strlen:
+    difference = total_length-strlen
+    title = title[:-difference] + '…'
+    total_length = len(artist) + len(title) + 1
+    if total_length > strlen:
+        difference = total_length-strlen
+        artist = artist[:-difference]
+
+if getctl('status') == "Playing":
+    status = pause_icon
+else:
+    status = play_icon
+
+# Formatting the string
+strlogo = "%{F" + color + "}" + logo_icon
+strartist = "%{T2}" + artist + ":%{T-}"
+strtitle = title
+strprev = "%{F-}%{A1:playerctl previous -p " + \
+    player + ":}" + prev_icon + "%{A}"
+strplaypause = "%{A1:playerctl play-pause -p " + \
+    player + ":}" + status + "%{A}"
+strnext = "%{A1:playerctl next -p " + player + ":}" + next_icon + "%{A}"
+
+print(strlogo, strartist, strtitle, strprev, strplaypause, strnext)

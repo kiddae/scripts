@@ -1,5 +1,5 @@
 #!/bin/bash
-pkgs=$(yay -Qq | wc -l &)
+pkgs=$(paru -Qq | wc -l &)
 distro=$(cat /etc/os-release | head -n1 | cut -d\" -f2 &)
 kernel=$(uname -r &)
 

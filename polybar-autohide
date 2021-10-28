@@ -11,7 +11,8 @@ SCREEN_HEIGHT = subprocess.check_output(
     "xdpyinfo | awk '/dimensions/{print $2}' | cut -d'x' -f2", shell=True)
 PERCENT_LIMIT = 15
 BAR_HEIGHT = int(subprocess.check_output(
-    'polybar --dump=height base 2>/dev/null', shell=True)) + int(subprocess.check_output('polybar --dump=offset-y base 2>/dev/null', shell=True)) * 2
+    'polybar --dump=height base 2>/dev/null', shell=True)) + int(subprocess.check_output('polybar --dump=offset-y base 2>/dev/null', shell=True)) * 1 + int(subprocess.check_output('polybar --dump=border-size base 2>/dev/null', shell=True)) * 2
+print(BAR_HEIGHT)
 if subprocess.check_output('polybar --dump=bottom base 2>/dev/null', shell=True) == b'true\n':
     BAR_POS = 'bottom'
 else:

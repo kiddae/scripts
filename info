@@ -1,0 +1,15 @@
+#!/bin/bash
+date=$(date +'%d %b')
+time=$(date +'%H:%M')
+layout=$(getlayout)
+title=$(playerctl metadata title)
+artist=$(playerctl metadata artist)
+status=$(playerctl metadata --format '{{lc(status)}}')
+volume=$(pamixer --get-volume)
+art=$(playerctl metadata mpris:artUrl)
+if [ -z "$art" ]; then
+    art="/home/me/Pictures/Profile pics/profile4.jpg"
+fi
+echo $art
+
+notify-send "Hey!" "Today is <b>${date}</b>, it is <b>${time}</b>.\nYou are using the <b>${layout}</b> layout.\n<b>${title}</b> by <b>${artist}</b> is ${status} (${volume}%)." -t 2500 -i "${art}"
